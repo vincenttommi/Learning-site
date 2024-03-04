@@ -2,6 +2,7 @@ from django.db  import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models  import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from .fields import OrderField
 
 
 
@@ -53,7 +54,8 @@ class Module(models.Model):
     
     
     title  = models.CharField(max_length=200)
-    description  = models.TextField(blank=True)        
+    description  = models.TextField(blank=True) 
+    order = OrderField(blank=True, for_fields=['course'])       
     
     
     def  __str__(self):
