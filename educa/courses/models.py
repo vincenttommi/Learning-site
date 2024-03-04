@@ -119,9 +119,16 @@ class  File(ItemBase):
     file  =  models.FileField(upload_to='files')
     # stores files,such as  PDFs
 class  Image(ItemBase):
-    file  = models.models.FileField(upload_to='images')
+    file  = models.FileField(upload_to='images')
     #Storing image  files
 class  Video(ItemBase):
     url  = models.URLField()
     #Storing videos,
     
+    
+    
+    
+    
+#defining an abstract model named ItemBase and set abstract=True in it's Meta class
+
+ 
