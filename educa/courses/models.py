@@ -1,5 +1,7 @@
 from django.db  import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models  import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 
 
@@ -56,3 +58,70 @@ class Module(models.Model):
     
     def  __str__(self):
         return self.title
+    
+    
+    
+    
+class  Content(models.Model):
+    
+    module  = models.ForeignKey(Module, related_name='contents', on_delete=models.CASCADE)
+    #a foriegnkey field to the contentType Model
+    content_type  = models.ForeignKey(ContentType, on_delete=models.CASCADE,limit_choices_to={'model__in':(
+        'text','video','image','file')})
+    object_id  = models.PositiveBigIntegerField()
+    #positiveIntegerField to store primary key of  the related object
+    item  = GenericForeignKey('content_type', 'object_id')
+    #A GenericForeignKey field to related object combining two previous fields
+        
+        
+       
+       
+       
+       
+       
+#Content model , a module that  contains  multiple contents and entails a foriegnkey field that
+#points to  module model 
+        
+        
+        
+  
+class BaseContent(models.Model):
+    title =  models.CharField(max_length=100)
+    created  = models.DateTimeField(auto_now_add=True)
+    class meta:
+        abstract  = True
+        
+
+
+
+class ItemBase(models.Model):
+    owner  = models.ForeignKey(User, related_name='%(class)s_related', on_delete=models.CASCADE)
+    
+    title  = models.CharField(max_length=250)
+    created  = models.DateTimeField(auto_now_add=True)
+    updated =  models.DateTimeField(auto_now=True)
+    
+    
+    
+    class Meta:
+        abstract  = True
+        
+        
+        def __str__(self):
+            return  self.title
+        
+        
+        
+class  Text(ItemBase):
+    content  = models.TextField()
+    #Stores text content
+class  File(ItemBase):
+    file  =  models.FileField(upload_to='files')
+    # stores files,such as  PDFs
+class  Image(ItemBase):
+    file  = models.models.FileField(upload_to='images')
+    #Storing image  files
+class  Video(ItemBase):
+    url  = models.URLField()
+    #Storing videos,
+    
