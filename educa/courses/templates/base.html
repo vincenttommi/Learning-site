@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8" />
         <title>{% block title  %}Educa{% endblock %}</title>
-        <link href="{%  static "css/base.css" %}" rel="stylesheet">
+        <link href="{% static "css/base.css" %}" rel="stylesheet">
     </head>
     <body>
         <div id="header">
@@ -25,7 +25,7 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', (event)=> {
-            {% comment %} DOM loaded {% endcomment %}
+           
             {%  block   domready %}
             {% endblock %}
         
@@ -33,3 +33,4 @@
         </script>
     </body>
 </html>
+{% comment %} Base template that will be extended by the rest of templates {% endcomment %}
