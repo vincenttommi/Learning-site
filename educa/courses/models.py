@@ -39,12 +39,10 @@ class Course(models.Model):
     #The date and time when the course was created .it will be automatically set by Django
     #when creating new objects because of auto_now_add=True
     
-    
-    class  Meta:
-        ordering = ['-created']
+ 
         
         
-        def __str__(self):
+    def __str__(self):
             return self.title
         
         
@@ -55,11 +53,15 @@ class Module(models.Model):
     
     title  = models.CharField(max_length=200)
     description  = models.TextField(blank=True) 
-    order = OrderField(blank=True, for_fields=['course'])       
+    order = OrderField(blank=True, for_fields=['course'])   
+    #The order of new  module will be assigned by adding 1 to the last module of the same
+    #Course object
     
+    class Meta:
+        ordering  = ['order']
     
     def  __str__(self):
-        return self.title
+        return f'{self.order}.{self.title}'
     
     
     
@@ -74,19 +76,16 @@ class  Content(models.Model):
     #positiveIntegerField to store primary key of  the related object
     item  = GenericForeignKey('content_type', 'object_id')
     #A GenericForeignKey field to related object combining two previous fields
+    order  = OrderField(blank=True, for_fields=['module'])  
+    #displaying contents in a particular order  
+    
+    class Meta:
+        ordering = ['order']
+        #a class that handles  order of  contents in database
         
-        
-       
-       
-       
-       
-       
+      
 #Content model , a module that  contains  multiple contents and entails a foriegnkey field that
 #points to  module model 
-        
-        
-        
-  
 class BaseContent(models.Model):
     title =  models.CharField(max_length=100)
     created  = models.DateTimeField(auto_now_add=True)
@@ -126,11 +125,6 @@ class  Image(ItemBase):
 class  Video(ItemBase):
     url  = models.URLField()
     #Storing videos,
-    
-    
-    
-    
-    
 #defining an abstract model named ItemBase and set abstract=True in it's Meta class
 
  
