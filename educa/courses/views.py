@@ -3,6 +3,8 @@ from .models import Course
 from django.views.generic.list import ListView
 from django.views.generic.edit import  CreateView,UpdateView,DeleteView
 from django.urls import  reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+
 
 # Create your views here.
 
@@ -35,7 +37,9 @@ class ownerEditMixin:
         form.instance.owner  = self.request.user
         return super().form_valid(form)
     
-class  ownerCourseMixin(OwnerMixin):
+class  ownerCourseMixin(OwnerMixin, LoginRequiredMixin,PermissionRequiredMixin):
+    #LoginRequiredMixin Replicates the login_required decorator's functionality
+    #PermissionRequiredMixin -Grants acess to users with a specific permission
     model =  Course
     # The model used  for QuerySets, it is used all views
     fields  = ['subject', 'title', 'slug', 'overview']
