@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixi
 class ManageCourseListView(ListView):
     model = Course
     template_name  = 'courses/manage/course/list.html'
+    Permission_required  = 'courses.view_course'
     
     
     def get_querset(self):
@@ -56,19 +57,16 @@ class ownerCourseEditMixin(ownerCourseMixin, ListView):
     
 
 class CourseCreateView(ownerCourseEditMixin, CreateView):
-    pass
+    permission_required  = 'courses.add_course'
     
-
-
-
 class CourseUpdateView(ownerCourseEditMixin, UpdateView):
-    pass
-
-
-
+    permission_required  = 'courses.change_course'
 
 class CourseDeleteView(ownerCourseMixin, DeleteView):
     template_name  = 'courses/manage/course/delete.html'
+    permission_required = 'courses.delete_course'
+    #checks wether the user accessing the view has  permission specified in the permission_required
+    #attribute
     
 
         
